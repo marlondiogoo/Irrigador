@@ -16,6 +16,7 @@ String opcao[3];
 int n = 0;
 int a = 0;
 int p = 0;
+int frequencia = 0;
 
 bool isON = false;
 bool Naoleu = true;
@@ -28,19 +29,28 @@ Keypad meuteclado = Keypad( makeKeymap(matriz_teclas), PinosqtdLinhas, PinosqtdC
 
 void setup() {
   lcd.begin(16, 2);
-  lcd.print("Bem-vindo!      ");
   opcao[0] = "<<LigIrrigador>>";
   opcao[1] = "<<AgendarIrrig>>";
   opcao[2] = "<< ZerarAgend >>";
-  lcd.setCursor(0, 1);
-  lcd.print(opcao[n]);
   pinMode(7, OUTPUT);
 }
 
 void loop() {
-  Menu();
+  limpa_tela();
+  lcd.print(millis()/1000);
+  char tecla_pressionada = meuteclado.getKey();
+  if(tecla_pressionada)
+  {
+    Naoleu = true;
+    if(tecla_pressionada == 'A')
+    {
+      Menu();
+    }
+  }
 }
-
+void limpa_tela(){
+  lcd.clear();
+}   
 void Menu() {
   Naoleu = true;
   lcd.setCursor(0,0);
@@ -80,6 +90,9 @@ void Menu() {
         else if(n == 2){
           ApagarAgendamento();
         }
+      }
+      else if(tecla_pressionada == 'A'){
+        Naoleu = false;
       }
     }
   }
@@ -154,8 +167,10 @@ void SelecionarFrequencia(){
         lcd.setCursor(0,1);
         lcd.print(quantidade[a]); 
       }
-      if(tecla_pressionada == 'D'){
-      leu = true;}
+      else if(tecla_pressionada == 'D'){
+        leu = true;
+        frequencia = a + 1;
+      }
     }
   } 
 }
